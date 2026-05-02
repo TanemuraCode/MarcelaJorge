@@ -103,16 +103,29 @@ async function decryptToBlobURL(encPath, password) {
 }
 
 async function decryptAll(password, onProgress) {
-  const elements = [...document.querySelectorAll('[data-enc]')];
+  const elements   = [...document.querySelectorAll('[data-enc]')];
+  const bgElements = [...document.querySelectorAll('[data-enc-bg]')];
+  const all        = [...elements, ...bgElements];
+  const blobCache  = {};
   let done = 0;
-  await Promise.all(elements.map(async el => {
+
+  await Promise.all(all.map(async el => {
     try {
-      el.src = await decryptToBlobURL(el.dataset.enc, password);
+      const encPath = el.dataset.enc || el.dataset.encBg;
+      if (!blobCache[encPath]) {
+        blobCache[encPath] = await decryptToBlobURL(encPath, password);
+      }
+      const url = blobCache[encPath];
+      if (el.dataset.enc) {
+        el.src = url;
+      } else {
+        el.style.backgroundImage = `url('${url}')`;
+      }
     } catch(e) {
-      console.error('Failed to decrypt', el.dataset.enc, e);
+      console.error('Failed to decrypt', el.dataset.enc || el.dataset.encBg, e);
     }
     done++;
-    if (onProgress) onProgress(done, elements.length);
+    if (onProgress) onProgress(done, all.length);
   }));
 }
 
