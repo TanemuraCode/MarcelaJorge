@@ -105,7 +105,8 @@ nav a:hover {
 }
 
 /* hamburger menu for mobile */
-/* .nav-toggle {
+/* hamburger button - hidden on desktop */
+.nav-toggle {
   display: none;
   background: none;
   border: none;
@@ -116,7 +117,7 @@ nav a:hover {
   top: 16px;
   right: 24px;
   z-index: 1001;
-} */
+}
 
 @media (max-width: 600px) {
   .nav-toggle {
@@ -126,15 +127,9 @@ nav a:hover {
   nav {
     flex-direction: column;
     align-items: flex-start;
-    padding: 0 24px;
-    background: transparent;
-    backdrop-filter: none;
-  }
-
-  nav.open {
+    padding: 14px 24px;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(6px);
-    padding: 14px 24px;
   }
 
   nav ul {
