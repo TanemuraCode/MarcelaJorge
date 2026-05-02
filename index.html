@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Marcela & Jorge</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 260px;
+    text-align: center;
+  }
+  label {
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  input[type=password] {
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.6);
+    color: white;
+    font-family: Georgia, serif;
+    font-size: 1rem;
+    text-align: center;
+  }
+  input::placeholder { color: rgba(255,255,255,0.6); }
+  button[type=submit] {
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.6);
+    color: white;
+    font-family: Georgia, serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  button[type=submit]:hover { background: rgba(255,255,255,0.4); }
+  #msg { font-size: 0.85rem; color: white; min-height: 1em; }
+</style>
+
+</head>
+<body>
+  <div id="overlay" style="display:none; position:fixed; inset:0; background:#C1B2D5; z-index:9999; flex-direction:column; align-items:center; justify-content:center; gap:1rem;">
+    <div style="font-family:'Balinesty',Georgia,serif; font-size:3rem; color:white;">Marcela & Jorge</div>
+    <div id="overlay-msg" style="font-family:Georgia,serif; color:white; font-size:1rem; letter-spacing:1px;">Decrypting…</div>
+    <div style="width:200px; height:2px; background:rgba(255,255,255,0.3); border-radius:99px;">
+      <div id="overlay-bar" style="height:100%; width:0%; background:white; border-radius:99px; transition:width 0.4s ease;"></div>
+    </div>
+  </div>
+  <form id="form">
+    <label>Password</label>
+    <input type="password" id="pw" autofocus />
+    <button type="submit">Enter</button>
+    <div id="msg"></div>
+  </form>
+
+  <script>
+const SALT_LEN  = 32;
+const NONCE_LEN = 12;
+const TAG_LEN   = 16;
+
+async function deriveKey(password, salt) {
+  const keyMat = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, hash: 'SHA-256', iterations: 600_000 },
+    keyMat, { name: 'AES-GCM', length: 256 }, false, ['decrypt']
+  );
+}
+
+async function decryptToBlobURL(encPath, password) {
+  const b64 = await fetch(encPath).then(r => r.text());
+  const buf = Uint8Array.from(atob(b64.trim()), c => c.charCodeAt(0));
+  const salt       = buf.slice(0, SALT_LEN);
+  const nonce      = buf.slice(SALT_LEN, SALT_LEN + NONCE_LEN);
+  const tag        = buf.slice(SALT_LEN + NONCE_LEN, SALT_LEN + NONCE_LEN + TAG_LEN);
+  const ciphertext = buf.slice(SALT_LEN + NONCE_LEN + TAG_LEN);
+  const combined = new Uint8Array(ciphertext.length + tag.length);
+  combined.set(ciphertext);
+  combined.set(tag, ciphertext.length);
+  const key = await deriveKey(password, salt);
+  const plain = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv: nonce, tagLength: 128 }, key, combined
+  );
+  const ext = encPath.replace('.enc', '').split('.').pop().toLowerCase();
+  const mime = {
+    jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png',
+    gif: 'image/gif', webp: 'image/webp',
+    mp3: 'audio/mpeg', ogg: 'audio/ogg', wav: 'audio/wav',
+    mp4: 'video/mp4', webm: 'video/webm',
+  }[ext] || 'application/octet-stream';
+  return URL.createObjectURL(new Blob([plain], { type: mime }));
+}
+
+async function decryptAll(password, onProgress) {
+  const elements = [...document.querySelectorAll('[data-enc]')];
+  let done = 0;
+  await Promise.all(elements.map(async el => {
+    try {
+      el.src = await decryptToBlobURL(el.dataset.enc, password);
+    } catch(e) {
+      console.error('Failed to decrypt', el.dataset.enc, e);
+    }
+    done++;
+    if (onProgress) onProgress(done, elements.length);
+  }));
+}
+
+document.getElementById('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = document.getElementById('msg');
+  // msg.textContent = 'Decrypting…';
+  try {
+    const overlay    = document.getElementById('overlay');
+    const overlayMsg = document.getElementById('overlay-msg');
+    const overlayBar = document.getElementById('overlay-bar');
+    overlay.style.display = 'flex';
+    // overlayMsg.textContent = 'Decrypting page…';
+    overlayBar.style.width = '20%';
+
+    const password = document.getElementById('pw').value;
+    const b64 = await fetch('main.html.enc').then(r => r.text());
+    const buf = Uint8Array.from(atob(b64.trim()), c => c.charCodeAt(0));
+    const salt       = buf.slice(0, SALT_LEN);
+    const nonce      = buf.slice(SALT_LEN, SALT_LEN + NONCE_LEN);
+    const tag        = buf.slice(SALT_LEN + NONCE_LEN, SALT_LEN + NONCE_LEN + TAG_LEN);
+    const ciphertext = buf.slice(SALT_LEN + NONCE_LEN + TAG_LEN);
+    const combined = new Uint8Array(ciphertext.length + tag.length);
+    combined.set(ciphertext);
+    combined.set(tag, ciphertext.length);
+    const key = await deriveKey(password, salt);
+    const plain = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: nonce, tagLength: 128 }, key, combined
+    );
+
+    // overlayMsg.textContent = 'Loading media…';
+    overlayBar.style.width = '40%';
+
+    sessionStorage.setItem('weddingKey', password);
+    await new Promise(resolve => setTimeout(resolve, 50));
+    document.open();
+    document.write(new TextDecoder().decode(plain));
+    document.close();
+
+    const newOverlay = document.getElementById('overlay');
+    const newBar     = document.getElementById('overlay-bar');
+    const newMsg     = document.getElementById('overlay-msg');
+    newBar.style.width = '60%';
+
+    await decryptAll(password, (done, total) => {
+      newMsg.textContent = `Loading media… ${done}/${total}`;
+      newBar.style.width = (60 + (done / total) * 35) + '%';
+    });
+
+    newBar.style.width = '100%';
+    // newMsg.textContent = 'Almost there…';
+    setTimeout(() => {
+      newOverlay.style.transition = 'opacity 0.8s ease';
+      newOverlay.style.opacity = '0';
+      setTimeout(() => newOverlay.style.display = 'none', 800);
+    }, 300);
+  } catch(err) {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('msg').textContent = 'Wrong password or corrupted file.';
+    console.error(err);
+  }
+});
+  </script>
+</body>
+</html>

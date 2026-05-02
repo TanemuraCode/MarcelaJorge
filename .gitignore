@@ -1,0 +1,6 @@
+# do not upload unencrypted media
+*.mp3
+*.jpg
+
+# do not upload unencrypted main.html
+main.html

@@ -1,0 +1,247 @@
+@font-face {
+  font-family: 'Balinesty'; /* The name you will use later */
+  src: url('fonts/Balinesty-Demo-BF682ecf579168f.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+    margin: 0;
+    font-family: "Georgia", serif;
+/*    background: #faf7f2;*/
+    background: #C1B2D5; /*#B1BBB6;*/
+    color: white;
+/*    color: #7a6a58;*/
+}
+
+header {
+    height: 100vh;
+    background: url('your-photo.jpg') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white; 
+/*    color: #AE99B2;*/
+    padding: 0 20px;
+}
+
+header h1 {
+/*    font-size: 3.5rem;*/
+    font-size: 15vw;
+    margin: 0;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    font-family: "Balinesty";
+    font-weight: 100; /* or 300 */
+}
+
+header p {
+    font-size: 1.3rem;
+    margin-top: 10px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+section {
+    padding: 60px 20px;
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+
+section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.date {
+    font-size: 1.4rem;
+    margin-top: 10px;
+    color: white;
+/*    color: #7a6a58;*/
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: white;
+}
+
+/* navigation */
+
+nav {
+  position: fixed;        /* stays at the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: center;
+  background: transparent; /* keeps it overlayed on your hero image */
+  z-index: 1000;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 40px;              /* spacing between links */
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  transition: opacity 0.3s ease;
+}
+
+nav a:hover {
+  opacity: 0.7;
+}
+
+/* parallax effect */
+
+.parallax {
+  height: 70vh; /* adjust height as you like */
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* photo gallery */
+
+.gallery {
+  display: flex;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+}
+
+.gallery img {
+  flex: 1 1 0;              /* ensures all images share space equally */
+  width: 0;                 /* prevents images from forcing layout */
+  object-fit: cover;
+  transition: flex 0.5s ease, filter 0.5s ease;
+  filter: brightness(70%);
+  cursor: pointer;
+}
+
+/* When hovering anywhere in the gallery, all images shrink */
+.gallery:hover img {
+  flex: 0.5;
+  filter: brightness(40%);
+}
+
+/* The hovered image expands */
+.gallery img:hover {
+  flex: 8;
+  filter: brightness(100%);
+}
+
+/* lightbox */
+
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;              /* hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+  cursor: zoom-out;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* bilingual accessibility */
+
+/* Hide both by default (JS will enable the correct one) */
+.en, .es {
+  display: none;
+}
+
+/* When body has lang-en, show English content */
+body.lang-en .en {
+  display: block;
+}
+
+/* When body has lang-es, show Spanish content */
+body.lang-es .es {
+  display: block;
+}
+
+/* Optional: style the language switcher */
+.language-switcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 2000;
+}
+
+.language-switcher button {
+  background: rgba(255,255,255,0.8);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.language-switcher button:hover {
+  background: white;
+}
+
+/* audio player */
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px 14px;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 2000;
+}
+
+#playPauseBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* highlight color */
+
+::selection {
+  background: #AE99B2;   /* highlight background */
+  color: #776889;        /* highlight text color */
+}
+
+/* For Firefox */
+::-moz-selection {
+  background: #AE99B2;
+  color: #776889;
+}
