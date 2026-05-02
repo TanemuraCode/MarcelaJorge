@@ -33,11 +33,20 @@
     text-align: center;
   }
 
-  label {
+  /* label {
     font-family: Georgia, serif;
     font-size: 2rem;
     letter-spacing: 2px;
-  }
+  } */
+    label {
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    white-space: nowrap; /* prevents line breaks */
+    align-self: center;  /* keeps it centered */
+    width: auto;         /* allows it to exceed form width */
+    }
+
 
   input[type=password] {
     padding: 0.7rem;
