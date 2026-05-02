@@ -294,7 +294,7 @@ body.lang-es .es {
 
 .responsive-iframe-container {
     position: relative;
-    padding-bottom: 150%;  /* Adjust based on your form's height */
+    padding-bottom: 60%;  /* Adjust based on your form's height */
     height: 0;
     overflow: hidden;
 }
