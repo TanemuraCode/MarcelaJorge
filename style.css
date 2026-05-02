@@ -8,10 +8,8 @@
 body {
     margin: 0;
     font-family: "Georgia", serif;
-/*    background: #faf7f2;*/
-    background: #C1B2D5; /*#B1BBB6;*/
+    background: #C1B2D5;
     color: white;
-/*    color: #7a6a58;*/
 }
 
 header {
@@ -141,6 +139,7 @@ nav a:hover {
     flex-direction: column;
     gap: 16px;
     width: 100%;
+    text-align: center;
     padding: 12px 0 4px 0;
   }
 

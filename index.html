@@ -5,44 +5,63 @@
   <title>Marcela & Jorge</title>
 <link rel="stylesheet" href="style.css" />
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+  }
+
   body {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    min-height: 100dvh;
+    padding: 1rem;
   }
+
   form {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    width: 360px;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 320px;
     text-align: center;
   }
+
   label {
     font-family: Georgia, serif;
     font-size: 2rem;
     letter-spacing: 2px;
   }
+
   input[type=password] {
-    padding: 0.5rem;
+    padding: 0.7rem;
     background: rgba(255,255,255,0.3);
     border: 1px solid rgba(255,255,255,0.6);
     color: white;
     font-family: Georgia, serif;
-    font-size: 1rem;
+    font-size: 1.1rem;
     text-align: center;
+    width: 100%;
   }
+
   input::placeholder { color: rgba(255,255,255,0.6); }
+
   button[type=submit] {
-    padding: 0.5rem;
+    padding: 0.7rem;
     background: rgba(255,255,255,0.2);
     border: 1px solid rgba(255,255,255,0.6);
     color: white;
     font-family: Georgia, serif;
-    font-size: 1rem;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: background 0.3s ease;
+    width: 100%;
   }
+
   button[type=submit]:hover { background: rgba(255,255,255,0.4); }
   #msg { font-size: 0.85rem; color: white; min-height: 1em; }
 </style>
