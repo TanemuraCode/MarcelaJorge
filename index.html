@@ -172,7 +172,7 @@ document.getElementById('form').addEventListener('submit', async e => {
     newBar.style.width = '60%';
 
     await decryptAll(password, (done, total) => {
-      newMsg.textContent = `Loading media… ${done}/${total}`;
+    //   newMsg.textContent = `Loading media… ${done}/${total}`;
       newBar.style.width = (60 + (done / total) * 35) + '%';
     });
 

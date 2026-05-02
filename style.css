@@ -16,19 +16,17 @@ body {
 
 header {
     height: 100vh;
-    background: url('3e6145ba-5ab4-465b-9515-7015f4b1e6a0.jpg') center/cover no-repeat;
+    /* background: url('3e6145ba-5ab4-465b-9515-7015f4b1e6a0.jpg') center/cover no-repeat; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     color: white; 
-/*    color: #AE99B2;*/
     padding: 0 20px;
 }
 
 header h1 {
-/*    font-size: 3.5rem;*/
     font-size: 15vw;
     margin: 0;
     letter-spacing: 2px;
