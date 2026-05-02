@@ -104,6 +104,46 @@ nav a:hover {
   opacity: 0.7;
 }
 
+/* hamburger menu for mobile */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+  position: fixed;
+  top: 16px;
+  right: 24px;
+  z-index: 1001;
+}
+
+@media (max-width: 600px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 24px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+  }
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    padding: 12px 0 4px 0;
+  }
+
+  nav ul.open {
+    display: flex;
+  }
+}
+
 /* parallax effect */
 
 .parallax {
