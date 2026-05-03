@@ -158,6 +158,10 @@ nav a:hover {
   background-repeat: no-repeat;
 }
 
+.parallax-right {
+  background-position: right center;
+}
+
 /* workaround for safari */
 @supports (-webkit-touch-callout: none) {
   .parallax {
