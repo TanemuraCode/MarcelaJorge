@@ -158,6 +158,13 @@ nav a:hover {
   background-repeat: no-repeat;
 }
 
+/* workaround for safari */
+@supports (-webkit-touch-callout: none) {
+  .parallax {
+    background-attachment: scroll;
+  }
+}
+
 /* photo gallery */
 
 .gallery {
