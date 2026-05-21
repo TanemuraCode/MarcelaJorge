@@ -51,6 +51,19 @@ section h2 {
     margin-bottom: 20px;
 }
 
+a { 
+  color: #788B84; 
+  text-decoration: none;
+}
+p a:link { 
+  color: #788B84; 
+  text-decoration: none;
+}
+p a:visited { 
+  color: #B1BBB6; 
+  text-decoration: none;
+}
+
 .date {
     font-size: 1.4rem;
     margin-top: 10px;
