@@ -330,3 +330,32 @@ body.lang-es .es {
     width: 100%;
     height: 100%;
 }
+
+section ul {
+  list-style: disc;
+  display: inline-block;
+  text-align: left;
+  padding-left: 1.5em;
+}
+
+section li {
+  position: static;
+  padding-left: 0;
+  text-align: left;
+}
+
+section li::before {
+  content: none;           /* remove the custom bullet */
+} 
+
+section div.en,
+section div.es {
+  text-align: center; /* keep headings/paragraphs centered */
+}
+
+section ul {
+  list-style: disc;
+  display: inline-block;
+  text-align: left;      /* bullets + text align left within the inline block */
+  padding-left: 1.5em;
+}
