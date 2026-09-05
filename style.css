@@ -181,6 +181,35 @@ nav a:hover {
     background-attachment: scroll;
   }
 }
+/* video parallax section (drone footage) */
+
+.video-parallax {
+  height: 70vh;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+}
+
+/* .video-parallax-stage is scaled up UNIFORMLY (same ratio on width and
+   height) from the visible section size — its aspect ratio always matches
+   the section's, so the video's cover-crop looks correctly framed, not
+   artificially zoomed. The extra size exists only to give room for the
+   parallax shift. Size + transform are set by JS. */
+.video-parallax-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  will-change: transform;
+}
+
+.video-parallax-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 30%;      /* shift right and up */
+  pointer-events: none;
+}
 
 /* photo gallery */
 
@@ -358,4 +387,20 @@ section ul {
   display: inline-block;
   text-align: left;      /* bullets + text align left within the inline block */
   padding-left: 1.5em;
+}
+
+.video-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;  /* was: width: 100%; */
+  min-height: 100vh;
+}
+
+#storyVideo {
+  width: 100%;
+  max-width: 90%;
+  height: auto;
+  min-width: 0; /* overrides the flex default that causes overflow */
+  cursor: pointer;
 }

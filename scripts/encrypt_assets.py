@@ -15,6 +15,7 @@ password = sys.argv[1]
 dirs = [
     ('images', False),  # non-recursive
     ('audio',  False),
+    ('videos', False),
 ]
 
 def encrypt_file(input_path, password):
@@ -34,7 +35,13 @@ for directory, recursive in dirs:
         continue
     print(f'\nProcessing {directory}/')
     for entry in os.scandir(directory):
-        if entry.is_file():
-            encrypt_file(entry.path, password)
-
+        if not entry.is_file():
+            continue
+        if entry.name.endswith('.enc'):
+            continue  # don't encrypt already-encrypted files
+        if os.path.exists(entry.path + '.enc'):
+            print(f'  Skipping (already encrypted): {entry.path}')
+            continue
+        encrypt_file(entry.path, password)
+        
 print('\nDone.')
