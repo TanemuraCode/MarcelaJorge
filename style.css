@@ -393,14 +393,25 @@ section ul {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-sizing: border-box;  /* was: width: 100%; */
+  width: 100%;
+  max-width: none;      /* breaks out of the 1000px cap on `section` */
+  box-sizing: border-box;
   min-height: 100vh;
+  padding: 0;
 }
 
-#storyVideo {
+.video-embed {
+  width: min(100%, calc(100vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  border: none;
+  display: block;
+}
+
+/* #storyVideo {
   width: 100%;
   max-width: 90%;
   height: auto;
-  min-width: 0; /* overrides the flex default that causes overflow */
+  min-width: 0;
   cursor: pointer;
-}
+} 
+*/
